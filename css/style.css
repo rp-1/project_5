@@ -1,0 +1,77 @@
+body {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+/* Must define attributes for each of the 
+/* following or nothing shows up */
+html, body, #map-canvas {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#searchbar {
+    position: absolute;
+    margin: 0;
+    left: 10px;
+    top: 10px;
+    width: 300px;
+    color: darkgray;
+    font-size: 14px;
+    height: 20px;
+    padding: 0;
+}
+
+#places-area {
+    position: absolute;
+    left: 10px;
+    top: 10%;
+    width: 300px;;
+    height: 80%;
+    background-color: #fff;
+    opacity: .8;
+    
+}
+
+#places-heading {
+    padding: 10px 20px;
+}
+
+#place-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#place-list li {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-top: 1px solid #000;
+}
+
+#place-list li:hover {
+    background-color: #ccc;
+}
+
+.info-window {
+    width: 600px;
+}
+
+.info-image {
+    width: 100%;
+}
+
+ul {
+    float: left;
+}
+
+#pic {
+    float: left;
+    width: 400px;
+}
+
+img {
+    max-width: 100%;
+}
+

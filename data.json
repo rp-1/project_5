@@ -1,0 +1,40 @@
+{
+    "places": [
+        {
+            "name": "Dark Horse Recording",
+            "position": {
+                "lat": 35.945964,
+                "lng": -86.939763
+            },
+            "description": "This is Dark Horse",
+            "image": "images/oceanway1.jpg"
+        },
+        {
+            "name": "Blackbird Studios",
+            "position": {
+                "lat": 36.143311,
+                "lng": -86.794066
+            },
+            "description": "this is blackbird",
+            "image": "images/blackbird1.jpg"
+        },
+        {
+            "name": "Sound Kitchen",
+            "position": {
+                "lat": 36.117175,
+                "lng": -86.753357
+            },
+            "description": "This is sound kitchen",
+            "image": "images/soundkitchen1.jpg"
+        },
+        {
+            "name": "Sixteen Ton Recording Studio",
+            "position": {
+                "lat": 36.146329,
+                "lng": -86.792327
+            },
+            "description": "This is 16 tons",
+            "image": "images/sixteenton1.jpg"
+        }
+    ]
+}
