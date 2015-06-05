@@ -28,11 +28,12 @@ html, body, #map-canvas {
     left: 10px;
     top: 10%;
     width: 300px;;
-    height: 80%;
+    max-height: 80%;
     background-color: #fff;
     opacity: .8;
     
 }
+
 
 #places-heading {
     padding: 10px 20px;
@@ -55,23 +56,11 @@ html, body, #map-canvas {
 }
 
 .info-window {
-    width: 600px;
+    width: 300px;
 }
 
-.info-image {
+.info-window img {
     width: 100%;
 }
 
-ul {
-    float: left;
-}
-
-#pic {
-    float: left;
-    width: 400px;
-}
-
-img {
-    max-width: 100%;
-}
 

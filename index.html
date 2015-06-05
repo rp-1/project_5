@@ -8,6 +8,7 @@
   </head>
   <body>
       
+
       <div id="map-canvas"></div>
       
 
@@ -18,8 +19,8 @@
 
           <h1 id="places-heading">Studios in and around Nashville.</h1>
 
-        <ul id="place-list" data-bind="foreach: matchedPlaces">
-            <li data-bind="text: name, click: $parent.placeListClicked"></li>
+        <ul id="place-list" data-bind="foreach: places">
+            <li data-bind="visible: isActive, text: name, click: $parent.placeListClicked"></li>
         </ul>
           
     </div><!-- end places-area -->
