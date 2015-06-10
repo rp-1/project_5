@@ -28,13 +28,20 @@ function ViewModel() {
         if (value !== '') {
 
             for (var i = 0; i < self.places().length; i++) {
-                var search_string = value.toLowerCase();
-                var full_tag = self.places()[i].name.toLowerCase();
-                var tag_array = full_tag.split(" ");
+                var search_string = value.toLowerCase().trim();
+                // get the whole name of place
+                var full_name = self.places()[i].name.toLowerCase();
+                
+                // split it up into individual words so we can match any term
+                var term_array = full_name.split(" ");
                 var matchFound = false;
-                for(var x = 0; x < tag_array.length; x++) {
-                    if( (tag_array[x].substr(0, search_string.length) == search_string)  || 
-                    (full_tag.substr(0, search_string.length) == search_string) ) {
+                
+                // Iterate through each term in the name looking for a match
+                // If match is found show the marker
+                for(var x = 0; x < term_array.length; x++) {
+                    if( (term_array[x].substr(0, search_string.length) === search_string)  || 
+                    (full_name.substr(0, search_string.length) === search_string) ) {
+                        console.log("if " + term_array[x] + " equals " + search_string);
                         matchFound = true;
                         self.places()[i].marker.setMap(self.map);
                         self.places()[i].isActive(true);
@@ -42,15 +49,15 @@ function ViewModel() {
                     }
                 }
                 if(!matchFound) {
-
-                        
+                    // If no matching term in name make sure the marker infoWindow
+                    // is not showing
                     if(self.infoWindows.length > 0) {
                         console.log("SHOULD KILL WINDOW");
                         self.infoWindows[0].close();
                         self.infoWindows.splice(0, self.infoWindows.length);
                         console.log("LENGTH IS NOW " + self.infoWindows.length);
                     }
-                  
+                    // If no matching term remove marker from view
                     self.places()[i].isActive(false);
                     self.places()[i].marker.setMap(null);
                 }
