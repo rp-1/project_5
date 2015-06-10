@@ -1,16 +1,24 @@
-// http://jsfiddle.net/JMPerez/0u0v7e1b/
+
 
 function ViewModel() {
     var self = this;
     self.places = ko.observableArray([]);
-
+    self.infoWindows =[];
     self.searchString = ko.observable();    // what user entered in search field
     self.map = null;
     
+    // use this for unordered list of places to track last selected entry
+    self.lastPlaceSelected = null;
+    
     // Called when an li item is clicked in the main places list
     self.placeListClicked = function(placeClicked) {
-        console.log("Place clicked");
-        console.log(placeClicked.name);
+        // We want to highlight the current selected place in unordered list
+        // So we'll want to deselect the previous selection.
+        if(self.lastPlaceSelected) {
+            self.lastPlaceSelected.isSelected(false);
+        }
+        placeClicked.isSelected(true);
+        self.lastPlaceSelected = placeClicked;
         self.showInfo(placeClicked);
     }
 
@@ -34,6 +42,15 @@ function ViewModel() {
                     }
                 }
                 if(!matchFound) {
+
+                        
+                    if(self.infoWindows.length > 0) {
+                        console.log("SHOULD KILL WINDOW");
+                        self.infoWindows[0].close();
+                        self.infoWindows.splice(0, self.infoWindows.length);
+                        console.log("LENGTH IS NOW " + self.infoWindows.length);
+                    }
+                  
                     self.places()[i].isActive(false);
                     self.places()[i].marker.setMap(null);
                 }
@@ -67,7 +84,7 @@ function ViewModel() {
                     
                     // Must make this observable to react to bool condition in html li element
                     place.isActive = ko.observable(true);
-                    
+                    place.isSelected = ko.observable(false);
                     
                     //var img = "images/icon_pic.png"; // must be location relative to index.html
                     var marker = new google.maps.Marker({position:place.position, name:place.name, description:place.description});
@@ -169,24 +186,47 @@ function ViewModel() {
     };
     
     this.showInfo = function(place) {
+        console.log("IN SHOWINFO");
         // Create the html content for the infoWindow
-        var mapImg = "https://maps.googleapis.com/maps/api/staticmap?center=" + place.marker.getPosition().lat() + "," + place.marker.getPosition().lng() + "&zoom=20&size=400x400&maptype=hybrid"
-        
+        //$('.info-window').html("");
         var markerContent = "<div class='info-window'><h3>" + place.name + 
-            "</h3><img class='info-img' src='" + 
-            mapImg + "'><p>" + place.marker.description + "</p>";
-        
+            "</h3><img class='info-window-main-img' src='" + 
+            place.image + "'></div>";
+        /*
         if(!self.infoWindow) {
             self.infoWindow = new google.maps.InfoWindow();
+        } else {
+            self.infoWindow.close();
+            self.infoWindow = null;
+            self.infoWindow = new google.maps.InfoWindow();
+        }
+        */
+        console.log("Before for loop infowindows length is " + self.infoWindows.length);
+        if(self.infoWindows.length > 0) {
+            self.infoWindows[0].close();
+            self.infoWindows.splice(0, self.infoWindows.length);
         }
         
-        self.infoWindow.setContent(markerContent);
-        self.infoWindow.open(this.map, place.marker);
+        self.infoWindows.push(new google.maps.InfoWindow());
+        console.log("INFO WINDOW LENGTH IS " + self.infoWindows.length);
+        self.infoWindows[0].setContent(markerContent);
+        self.infoWindows[0].open(this.map, place.marker);
+        
+//http://stackoverflow.com/questions/5416160/listening-for-the-domready-event-for-google-maps-infowindow-class
+        // Very first infoWindow would not show ajax content. This is a fix
+        google.maps.event.addListener(self.infoWindows[0], 'domready', function() {
+            // Pass yelp id from data model AND the dom element you wish to append
+            // the yelp info to. Doing this to accomodate instances where we may
+            // want yelp info to go somewhere other than an info window. Flexible.
+            var domElement = $('.info-window');
+            getYelpInfo(place.yelpId, domElement);
+        });
+        
+
 
     };
     
     this.updatePlaceList = function(places2show) {
-        console.log("IN UPDATE PLACE LIST: " + places2show);
         for(var i = 0; i < places2show.length; i++) {
             var htm = "<li>" + places2show[i].name + "</li>";
             $("#place-list").append(htm);
@@ -198,9 +238,70 @@ function ViewModel() {
 
 }
 
+function getYelpInfo(placeName, domElement) {
+
+    var auth = {
+
+      consumerKey: "b5sbMuBxHo5ZqlIJJtRxJQ",
+      consumerSecret: "z3jXptGnGyBQVMconwRbnELfUaw",
+      accessToken: "2iDJU47MJqKTOdO-uNXDLrtI_nrU2_pd",
+      accessTokenSecret: "3_S71q7_PYycDDZoDXZoQJ2bEd8",
+      serviceProvider: {
+        signatureMethod: "HMAC-SHA1"
+      }
+    };
+
+    var terms = 'http://api.yelp.com/v2/business/' + placeName;
+
+    var accessor = {
+      consumerSecret: auth.consumerSecret,
+      tokenSecret: auth.accessTokenSecret
+    };
+
+    var params = [];
+    params.push(['callback', 'cb']);
+    params.push(['oauth_consumer_key', auth.consumerKey]);
+    params.push(['oauth_consumer_secret', auth.consumerSecret]);
+    params.push(['oauth_token', auth.accessToken]);
+    params.push(['oauth_signature_method', 'HMAC-SHA1']);
+
+    var message = {
+        'action': terms,
+        'method': 'GET',
+        'parameters': params
+    };
+
+    OAuth.setTimestampAndNonce(message);
+    OAuth.SignatureMethod.sign(message, accessor);
+
+    var pMap = OAuth.getParameterMap(message.parameters);
+    pMap.oauth_signature = OAuth.percentEncode(pMap.oauth_signature)
+
+
+    $.ajax({
+      'url': message.action,
+      'data': pMap,
+      'cache': true,
+      'dataType': 'jsonp',
+      'jsonpCallback': 'cb',
+      'success': function(data, text, XMLHttpRequest) {
+          console.log("IN SUCCESS");
+          console.log(domElement);
+          var html = "<h4>Yelp Reviews</h4>"
+          html += "<img src='" + data.rating_img_url + "'>";
+          html += data.review_count + " reviews";
+        html += "<img src='" + data.image_url + "'>";
+          html += "<h5>What they're saying...</h5>";
+          html += data.snippet_text;
+        $(domElement).append(html);
+          //domElement.setContent(html);
+      }
+    // TODO: HANDLE ERROR 404
+    });
+}
 
 $(document).ready(function() {
-    ko.applyBindings(new ViewModel());
+   ko.applyBindings(new ViewModel());
 });
 
 

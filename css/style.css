@@ -31,12 +31,13 @@ html, body, #map-canvas {
     max-height: 80%;
     background-color: #fff;
     opacity: .8;
-    
+    overflow: auto;
 }
 
 
 #places-heading {
     padding: 10px 20px;
+    color: orangered;
 }
 
 #place-list {
@@ -55,12 +56,28 @@ html, body, #map-canvas {
     background-color: #ccc;
 }
 
-.info-window {
-    width: 300px;
+.selected {
+    background-color: orange;
 }
 
-.info-window img {
-    width: 100%;
+.info-window {
+    width: 320px;
+    height: 300px;
+    overflow: auto;
+    line-height:1.35;
+
+}   
+
+.info-window h3,
+.info-window h4,
+.info-window h5 {
+    color: orangered;
+    margin: 0;
+    padding: 0;
+}
+
+.info-window-main-img {
+    width: 250px;
 }
 
 

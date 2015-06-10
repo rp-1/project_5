@@ -17,16 +17,18 @@
       
       <div id="places-area">
 
-          <h1 id="places-heading">Studios in and around Nashville.</h1>
+          <h1 id="places-heading">Hot Chicken in Nashville.</h1>
 
         <ul id="place-list" data-bind="foreach: places">
-            <li data-bind="visible: isActive, text: name, click: $parent.placeListClicked"></li>
+            <li data-bind="visible: isActive, text: name, style: { color: isSelected() ? 'red' : 'black' }, click: $parent.placeListClicked"></li>
         </ul>
           
     </div><!-- end places-area -->
       
       
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAod1UVSvoMd3BDFz717WEMKiPKkXMVV6g"></script>
+        	<script src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
+  	<script src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
       <script src='js/jquery-1.11.3.min.js'></script>
       <script type='text/javascript' src='js/knockout-3.3.0.js'></script>
       <script src="js/map.js"></script>
