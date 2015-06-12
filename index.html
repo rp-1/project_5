@@ -3,32 +3,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <title>MY MAP</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Your map to the hottest hot chicken joints in Nashville">
+      <title>The Hottest Hot Chicken in Nashville</title>
       <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
       
-
       <div id="map-canvas"></div>
-      
-
         <input data-bind="textInput: searchString" id="searchbar" type="text" placeholder="Enter search term" />
  
       
       <div id="places-area">
 
-          <h1 id="places-heading">Hot Chicken in Nashville.</h1>
+          <h1 id="places-heading">Hot Chicken in Nashville</h1>
 
-        <ul id="place-list" data-bind="foreach: places">
-            <li data-bind="visible: isActive, text: name, style: { color: isSelected() ? 'red' : 'black' }, click: $parent.placeListClicked"></li>
-        </ul>
+          <ul id="place-list" data-bind="foreach: places">
+            <li data-bind="visible: isActive, text: name, click: $parent.placeListClicked, style: { color: isSelected() ? '#fff' : '#4D4D4D' }"></li>
+            </ul>
           
-    </div><!-- end places-area -->
+      </div><!-- end places-area -->
       
       
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAod1UVSvoMd3BDFz717WEMKiPKkXMVV6g"></script>
-        	<script src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
-  	<script src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
+      <script src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
+      <script src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
       <script src='js/jquery-1.11.3.min.js'></script>
       <script type='text/javascript' src='js/knockout-3.3.0.js'></script>
       <script src="js/map.js"></script>

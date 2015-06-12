@@ -32,12 +32,12 @@ html, body, #map-canvas {
     background-color: #fff;
     opacity: .8;
     overflow: auto;
+    color: #FC672E;
 }
-
 
 #places-heading {
     padding: 10px 20px;
-    color: orangered;
+    color: #FC672E;
 }
 
 #place-list {
@@ -53,11 +53,13 @@ html, body, #map-canvas {
 }
 
 #place-list li:hover {
-    background-color: #ccc;
+    background-color: #FC672E;
+    color: #fff;
 }
 
 .selected {
-    background-color: orange;
+    background-color: #FC672E;
+    color: #fff;
 }
 
 .info-window {
@@ -65,13 +67,30 @@ html, body, #map-canvas {
     height: 300px;
     overflow: auto;
     line-height:1.35;
-
 }   
+
+.info-window p {
+    margin: 0;
+}
+
+.info-window hr {
+    color: lightgray;
+    padding-right: 10px;
+}
+
+.info-window a {
+    color: #FC672E;
+    font-style: italic;
+}
+
+p.review-text {
+    display: inline-block;
+}
 
 .info-window h3,
 .info-window h4,
 .info-window h5 {
-    color: orangered;
+    color: #FC672E;
     margin: 0;
     padding: 0;
 }
@@ -79,5 +98,18 @@ html, body, #map-canvas {
 .info-window-main-img {
     width: 250px;
 }
+.info-window-yelp {
+    
+}
 
+.global-error {
+    width: 80%;
+    margin: 10% auto;
+    background-color: bisque;
+    color: #FC672E;
+}
+
+.global-error a {
+    color: #FC672E;
+}
 

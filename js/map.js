@@ -4,6 +4,7 @@ function ViewModel() {
     var self = this;
     self.places = ko.observableArray([]);
     self.infoWindows =[];
+    self.infoWindow = null;
     self.searchString = ko.observable();    // what user entered in search field
     self.map = null;
     
@@ -48,16 +49,11 @@ function ViewModel() {
                         break;
                     }
                 }
+                
                 if(!matchFound) {
-                    // If no matching term in name make sure the marker infoWindow
-                    // is not showing
-                    if(self.infoWindows.length > 0) {
-                        console.log("SHOULD KILL WINDOW");
-                        self.infoWindows[0].close();
-                        self.infoWindows.splice(0, self.infoWindows.length);
-                        console.log("LENGTH IS NOW " + self.infoWindows.length);
+                    if(self.infoWindow) {
+                        self.infoWindow.close();
                     }
-                    // If no matching term remove marker from view
                     self.places()[i].isActive(false);
                     self.places()[i].marker.setMap(null);
                 }
@@ -66,13 +62,17 @@ function ViewModel() {
             for(var i = 0; i < self.places().length; i++) {
                 self.places()[i].marker.setMap(self.map);
                 self.places()[i].isActive(true);
+                self.places()[i].isSelected(false);
             }
         }
     });
     
     self.init = function() {
         
-
+        // Set up some error handling
+        window.onerror = function () {
+            self.showErrorMsg("GENERAL ERROR");
+        }
         // load data via jQuery json call
         $.ajax({
             type: "GET",
@@ -94,38 +94,35 @@ function ViewModel() {
                     place.isSelected = ko.observable(false);
                     
                     //var img = "images/icon_pic.png"; // must be location relative to index.html
-                    var marker = new google.maps.Marker({position:place.position, name:place.name, description:place.description});
+                    var marker = new google.maps.Marker({position:place.position, 
+                                name:place.name, description:place.description});
+                    
                     marker.image = place.image;
                     marker.setMap(self.map);
 
                     // Add event listener to capture clicks on individual markers
                     // When clicked, each marker will show info pop up
-                    
                     google.maps.event.addListener(marker, 'click', (function(placeCopy) {
                         return function() {
                             self.showInfo(placeCopy);
                         }
                     }) (place));
-                    
 
                     // Make the marker an object of the place object
                     place.marker = marker;
-                    self.places.push(data.places[i]);
+                    self.places.push(place);
                 }
-                
-                // Now that we know we have data, create the map
-                //self.createMap();
+
             },
             error: function(obj, textStatus, errorThrown) {
-                // TODO: HTML RESPONSE TO USER AND RETURN
-                console.log("Error retrieving json file: " + textStatus + " " + errorThrown);
+                self.showErrorMsg("JSON READ ERROR");
             }
         
             });
     };
     
    
-    this.createMap = function() {
+    self.createMap = function() {
 
         // First set the map options
         var mapOptions = {
@@ -151,9 +148,6 @@ function ViewModel() {
         // Init map with options just created
         self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
         
-        // With map created, now we can add markers
-        //self.createMarkersFromData();
-        
         // Resize map responsively when browser is resized.
         // http://hsmoore.com/blog/keep-google-map-v3-centered-when-browser-is-resized/
         google.maps.event.addDomListener(window, "resize", function() {
@@ -163,155 +157,135 @@ function ViewModel() {
         });
     };
     
-    this.createMarkersFromData = function() {
-
-        for(var i = 0; i < self.places().length; i++) {
-
-            var place = self.places()[i];
-            //var img = "images/icon_pic.png"; // must be location relative to index.html
-            var marker = new google.maps.Marker({position:place.position, name:place.name, description:place.description});
-            marker.image = place.image;
-            marker.setMap(self.map);
-            
-            // Add event listener to capture clicks on individual markers
-            // When clicked, each marker will show info pop up
-            google.maps.event.addListener(marker, 'click', (function(markerCopy) {
-                return function() {
-                    self.showInfo(markerCopy);
-                }
-            }) (marker));
-            
-            // Make the marker an object of the place object
-            self.places()[i].marker = marker;
-            self.places()[i].isActive = ko.observable(false);
-            console.log(self.places()[i].isActive());
-            
- 
-        }
-        
-        
-    };
     
-    this.showInfo = function(place) {
-        console.log("IN SHOWINFO");
+    self.showInfo = function(place) {
+
         // Create the html content for the infoWindow
-        //$('.info-window').html("");
+        $('.info-window').empty();
         var markerContent = "<div class='info-window'><h3>" + place.name + 
-            "</h3><img class='info-window-main-img' src='" + 
-            place.image + "'></div>";
-        /*
+            "</h3><p class='info-window-yelp-rating'></p><img class='info-window-main-img' src='" + 
+            place.image + "'><div class='info-window-yelp'>Retrieving Yelp stuff...</div></div>";
+        
         if(!self.infoWindow) {
             self.infoWindow = new google.maps.InfoWindow();
-        } else {
-            self.infoWindow.close();
-            self.infoWindow = null;
-            self.infoWindow = new google.maps.InfoWindow();
-        }
-        */
-        console.log("Before for loop infowindows length is " + self.infoWindows.length);
-        if(self.infoWindows.length > 0) {
-            self.infoWindows[0].close();
-            self.infoWindows.splice(0, self.infoWindows.length);
         }
         
-        self.infoWindows.push(new google.maps.InfoWindow());
-        console.log("INFO WINDOW LENGTH IS " + self.infoWindows.length);
-        self.infoWindows[0].setContent(markerContent);
-        self.infoWindows[0].open(this.map, place.marker);
+        self.infoWindow.setContent(markerContent);
+        self.infoWindow.open(this.map, place.marker);
         
 //http://stackoverflow.com/questions/5416160/listening-for-the-domready-event-for-google-maps-infowindow-class
         // Very first infoWindow would not show ajax content. This is a fix
-        google.maps.event.addListener(self.infoWindows[0], 'domready', function() {
+        google.maps.event.addListener(self.infoWindow, 'domready', function() {
             // Pass yelp id from data model AND the dom element you wish to append
             // the yelp info to. Doing this to accomodate instances where we may
             // want yelp info to go somewhere other than an info window. Flexible.
             var domElement = $('.info-window');
-            getYelpInfo(place.yelpId, domElement);
+            self.getYelpInfo(place.yelpId, domElement);
         });
-        
-
-
     };
     
-    this.updatePlaceList = function(places2show) {
+    self.updatePlaceList = function(places2show) {
         for(var i = 0; i < places2show.length; i++) {
             var htm = "<li>" + places2show[i].name + "</li>";
             $("#place-list").append(htm);
         }
-    }
+    };
+    
+    self.showErrorMsg = function(e) {
+        var fallbackUrl = "https://www.google.com/search?q=hot+chicken&ie=" +
+                "utf-8&oe=utf-8#q=hot+chicken+nashville";
+        var html = "<h2>Something ain't right!</h2>";
+        html += "<p>An error occurred while retrieving your hot chicken map.</p>";
+        html += "<p>Check your connection and please try again.</p>";
+        html += "<p>If all else fails, and you've got a serious hankering " +
+                "for hot chicken, try <a href='" + fallbackUrl + "'>searching " +
+                "for hot chicken on Google</a>";
+       $("body").addClass("global-error");
+        $(".global-error").html(html);
+        console.log(e);
+    };
+    
+    self.getYelpInfo = function(placeName, domElement) {
+   
+        var auth = {
+
+          myConsumerKey: "b5sbMuBxHo5ZqlIJJtRxJQ",
+          myConsumerSecret: "z3jXptGnGyBQVMconwRbnELfUaw",
+          myAccessToken: "2iDJU47MJqKTOdO-uNXDLrtI_nrU2_pd",
+          myAccessTokenSecret: "3_S71q7_PYycDDZoDXZoQJ2bEd8",
+          myServiceProvider: {
+            signatureMethod: "HMAC-SHA1"
+          }
+        };
+
+        var apiUrl = 'http://api.yelp.com/v2/business/' + placeName;
+
+        var accessor = {
+          consumerSecret: auth.myConsumerSecret,
+          tokenSecret: auth.myAccessTokenSecret
+        };
+
+        var params = [];
+        params.push(['callback', 'yelpCallback']); // must have this! Or errors.
+        params.push(['jsonpCallback', 'yelpCallback']);
+        params.push(['oauth_consumer_key', auth.myConsumerKey]);
+        params.push(['oauth_consumer_secret', auth.myConsumerSecret]);
+        params.push(['oauth_token', auth.myAccessToken]);
+        params.push(['oauth_signature_method', 'HMAC-SHA1']);
+
+        var message = {
+            'action': apiUrl,
+            'method': 'GET',
+            'parameters': params
+        };
+
+        OAuth.setTimestampAndNonce(message);
+        OAuth.SignatureMethod.sign(message, accessor);
+
+        var pMap = OAuth.getParameterMap(message.parameters);
+        pMap.oauth_signature = OAuth.percentEncode(pMap.oauth_signature)
+
+
+        $.ajax({
+          'url': message.action,
+          'data': pMap,
+          'cache': true,
+          'dataType': 'jsonp',
+            // jsonp does not generate explicit errors that json does. So here is a workaround
+            // http://geekswithblogs.net/intermark/archive/2014/03/17/jquery.ajax-datatype-jsonpndasherror-handler-not-called.aspx
+            'timeout': 5000, // a lot of time for the request to be successfully completed
+            'error': function(x, t, m) {
+                var placeUrl = "http://www.yelp.com/biz/" + placeName;
+                var html = "Error retrieving yelp data.";
+                html += "<p>Try visiting <a href='" + placeUrl + "'>yelp</a> to read more.</p>";
+                $(".info-window-yelp").html(html);
+            },
+
+          //'jsonpCallback': 'yelpCallback',
+          'success': function(data, text, XMLHttpRequest) {
+
+              var html = "";
+              for(var i = 0; i < data.location.display_address.length; i++) {
+                  html += "<p>" + data.location.display_address[i] + "</p>";
+              }
+              html += "<p>" + data.display_phone + "</p>";
+              html += "<hr>";
+              html += "<img src='" + data.rating_img_url + "'>";
+              html += "<p class='review-text'>" + data.review_count + " reviews on Yelp";
+              html += "<h5>What they're saying on Yelp...</h5>";
+              html += '"' + data.snippet_text + '"';
+            html += "<p><a href='" + data.url + "'>More</a>";
+            $(".info-window-yelp").html(html);
+          }
+    });
+};
         
     self.init();
-    
-
-}
-
-function getYelpInfo(placeName, domElement) {
-
-    var auth = {
-
-      consumerKey: "b5sbMuBxHo5ZqlIJJtRxJQ",
-      consumerSecret: "z3jXptGnGyBQVMconwRbnELfUaw",
-      accessToken: "2iDJU47MJqKTOdO-uNXDLrtI_nrU2_pd",
-      accessTokenSecret: "3_S71q7_PYycDDZoDXZoQJ2bEd8",
-      serviceProvider: {
-        signatureMethod: "HMAC-SHA1"
-      }
-    };
-
-    var terms = 'http://api.yelp.com/v2/business/' + placeName;
-
-    var accessor = {
-      consumerSecret: auth.consumerSecret,
-      tokenSecret: auth.accessTokenSecret
-    };
-
-    var params = [];
-    params.push(['callback', 'cb']);
-    params.push(['oauth_consumer_key', auth.consumerKey]);
-    params.push(['oauth_consumer_secret', auth.consumerSecret]);
-    params.push(['oauth_token', auth.accessToken]);
-    params.push(['oauth_signature_method', 'HMAC-SHA1']);
-
-    var message = {
-        'action': terms,
-        'method': 'GET',
-        'parameters': params
-    };
-
-    OAuth.setTimestampAndNonce(message);
-    OAuth.SignatureMethod.sign(message, accessor);
-
-    var pMap = OAuth.getParameterMap(message.parameters);
-    pMap.oauth_signature = OAuth.percentEncode(pMap.oauth_signature)
-
-
-    $.ajax({
-      'url': message.action,
-      'data': pMap,
-      'cache': true,
-      'dataType': 'jsonp',
-      'jsonpCallback': 'cb',
-      'success': function(data, text, XMLHttpRequest) {
-          console.log("IN SUCCESS");
-          console.log(domElement);
-          var html = "<h4>Yelp Reviews</h4>"
-          html += "<img src='" + data.rating_img_url + "'>";
-          html += data.review_count + " reviews";
-        html += "<img src='" + data.image_url + "'>";
-          html += "<h5>What they're saying...</h5>";
-          html += data.snippet_text;
-        $(domElement).append(html);
-          //domElement.setContent(html);
-      }
-    // TODO: HANDLE ERROR 404
-    });
 }
 
 $(document).ready(function() {
    ko.applyBindings(new ViewModel());
 });
-
-
 
 
 function detectBrowser() {
