@@ -95,7 +95,7 @@ function ViewModel() {
                     
                     //var img = "images/icon_pic.png"; // must be location relative to index.html
                     var marker = new google.maps.Marker({position:place.position, 
-                                name:place.name, description:place.description});
+                                name:place.name});
                     
                     marker.image = place.image;
                     marker.setMap(self.map);
@@ -126,8 +126,12 @@ function ViewModel() {
 
         // First set the map options
         var mapOptions = {
-            center: {lat: 36.162664, lng: -86.781602},
+            center: {lat: 36.15546, lng: -86.82967},
+            // Style from online style editor: https://snazzymaps.com/style/17/bright-and-bubbly
+            styles: [{"featureType":"water","stylers":[{"color":"#19a0d8"}]},{"featureType":"administrative","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"},{"weight":6}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#e85113"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efe9e4"},{"lightness":-40}]},{"featureType":"road.arterial","elementType":"geometry.stroke","stylers":[{"color":"#efe9e4"},{"lightness":-20}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"lightness":100}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"lightness":-100}]},{"featureType":"road.highway","elementType":"labels.icon"},{"featureType":"landscape","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"landscape","stylers":[{"lightness":20},{"color":"#efe9e4"}]},{"featureType":"landscape.man_made","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"lightness":100}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"lightness":-100}]},{"featureType":"poi","elementType":"labels.text.fill","stylers":[{"hue":"#11ff00"}]},{"featureType":"poi","elementType":"labels.text.stroke","stylers":[{"lightness":100}]},{"featureType":"poi","elementType":"labels.icon","stylers":[{"hue":"#4cff00"},{"saturation":58}]},{"featureType":"poi","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#f0e4d3"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#efe9e4"},{"lightness":-25}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#efe9e4"},{"lightness":-10}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"simplified"}]}],
             zoom: 10,
+            disableDefaultUI: true,
+            pancontrol: false,
             mapTypeControl: true,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
@@ -255,6 +259,7 @@ function ViewModel() {
             // http://geekswithblogs.net/intermark/archive/2014/03/17/jquery.ajax-datatype-jsonpndasherror-handler-not-called.aspx
             'timeout': 5000, // a lot of time for the request to be successfully completed
             'error': function(x, t, m) {
+                console.log("IN ERROR: " + t);
                 var placeUrl = "http://www.yelp.com/biz/" + placeName;
                 var html = "Error retrieving yelp data.";
                 html += "<p>Try visiting <a href='" + placeUrl + "'>yelp</a> to read more.</p>";
@@ -263,7 +268,7 @@ function ViewModel() {
 
           //'jsonpCallback': 'yelpCallback',
           'success': function(data, text, XMLHttpRequest) {
-
+              console.log("IN SUCCESS");
               var html = "";
               for(var i = 0; i < data.location.display_address.length; i++) {
                   html += "<p>" + data.location.display_address[i] + "</p>";

@@ -1,0 +1,73 @@
+REFERENCES AND RESOURCES USED IN PROJECT 5
+
+*************************************
+*                                   *
+*               GENERAL             *
+*                                   *
+*************************************
+
+Ideas, code snippets, advice and help from
+Udacity blogs, forums, posts, google hangouts, office hours, etc.
+
+Frequent trips for small tips and examples
+http://stackoverflow.com
+
+CSS reference from
+https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
+
+
+*************************************
+*                                   *
+*               API'S               *
+*                                   *
+*************************************
+
+Google Map API
+https://developers.google.com/maps/
+
+Yelp Business API
+https://www.yelp.com/developers/documentation/v2/business
+
+Knockout.js info, code and examples from
+http://knockoutjs.com/
+
+JQuery api and examples from
+https://jquery.com/
+
+
+*************************************
+*                                   *
+*               TOOLS               *
+*                                   *
+*************************************
+
+Ongoing troubleshooting, testing, tweaking with Firebug
+http://getfirebug.com/
+
+Latitude and Longitude tools at
+http://www.latlong.net/
+
+JSON validation at
+http://jslint.com/
+
+JSON formatter for viewing retrieved json
+http://jsonformatter.curiousconcept.com/
+
+Google maps online style editor
+https://snazzymaps.com/style/17/bright-and-bubbly
+
+
+*************************************
+*                                   *
+*          CODE SNIPPETS            *
+*                                   *
+*************************************
+
+Worked out issues with info windows at
+http://stackoverflow.com/questions/5416160/listening-for-the-domready-event-for-google-maps-infowindow-class
+
+Error handling code for jsonp issues
+http://geekswithblogs.net/intermark/archive/2014/03/17/jquery.ajax-datatype-jsonpndasherror-handler-not-called.aspx
+
+
+

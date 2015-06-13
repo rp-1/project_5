@@ -6,21 +6,22 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="Your map to the hottest hot chicken joints in Nashville">
-      <title>The Hottest Hot Chicken in Nashville</title>
+      <title>Find your Fire: The Hottest Hot Chicken in Nashville</title>
       <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
       
+
       <div id="map-canvas"></div>
-        <input data-bind="textInput: searchString" id="searchbar" type="text" placeholder="Enter search term" />
+        <input data-bind="textInput: searchString" id="searchbar" type="text" placeholder="Search for a hot chicken joint" />
  
       
       <div id="places-area">
 
-          <h1 id="places-heading">Hot Chicken in Nashville</h1>
+          <h1 id="places-heading">Hot Chicken Joints in Nashville</h1>
 
           <ul id="place-list" data-bind="foreach: places">
-            <li data-bind="visible: isActive, text: name, click: $parent.placeListClicked, style: { color: isSelected() ? '#fff' : '#4D4D4D' }"></li>
+            <li data-bind="visible: isActive, text: name, click: $parent.placeListClicked, css: { selected: isSelected()    }"></li>
             </ul>
           
       </div><!-- end places-area -->

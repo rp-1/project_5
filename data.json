@@ -45,17 +45,6 @@
       "yelpId": "hattie-bs-hot-chicken-nashville-3"
     },
     {
-      "name": "Helen’s Hot Chicken Truck",
-      "address": "1222 Rosa L. Parks Blvd, Nashville, TN 37208",
-      "position": {
-        "lat": 36.175121,
-        "lng": -86.792324
-      },
-      "description": "One of the originals",
-      "image": "images/helens.jpg",
-      "yelpId": "helens-hot-chicken-truck-nashville"
-    },
-    {
       "name": "400 Degrees Hot Chicken",
       "address": "319 Peabody St Nashville, TN 37210",
       "position": {
