@@ -10,15 +10,21 @@ function ViewModel() {
     
     // use this for unordered list of places to track last selected entry
     self.lastPlaceSelected = null;
-    
+    self.lastZ = null;
     // Called when an li item is clicked in the main places list
-    self.placeListClicked = function(placeClicked) {
+    self.placeClicked = function(placeClicked, event) {
+        console.log(event.target);
+        self.lastZ = placeClicked.marker.getZIndex();
         // We want to highlight the current selected place in unordered list
         // So we'll want to deselect the previous selection.
         if(self.lastPlaceSelected) {
             self.lastPlaceSelected.isSelected(false);
+            self.lastPlaceSelected.marker.setZIndex(self.lastZ);
+            console.log("LAST Z IS " + self.lastZ);
         }
+
         placeClicked.isSelected(true);
+        placeClicked.marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
         self.lastPlaceSelected = placeClicked;
         self.showInfo(placeClicked);
     }
@@ -99,11 +105,13 @@ function ViewModel() {
                     
                     marker.image = place.image;
                     marker.setMap(self.map);
+                    marker.setZIndex(i);
 
                     // Add event listener to capture clicks on individual markers
                     // When clicked, each marker will show info pop up
                     google.maps.event.addListener(marker, 'click', (function(placeCopy) {
                         return function() {
+                            self.placeClicked(placeCopy);
                             self.showInfo(placeCopy);
                         }
                     }) (place));
@@ -277,9 +285,9 @@ function ViewModel() {
               html += "<hr>";
               html += "<img src='" + data.rating_img_url + "'>";
               html += "<p class='review-text'>" + data.review_count + " reviews on Yelp";
-              html += "<h5>What they're saying on Yelp...</h5>";
+              html += "<h5>What people are saying...</h5>";
               html += '"' + data.snippet_text + '"';
-            html += "<p><a href='" + data.url + "'>More</a>";
+            html += "<p><a href='" + data.url + "'>More from Yelp</a>";
             $(".info-window-yelp").html(html);
           }
     });
