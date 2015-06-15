@@ -11,25 +11,28 @@ function ViewModel() {
     // use this for unordered list of places to track last selected entry
     self.lastPlaceSelected = null;
     self.lastZ = null;
-    // Called when an li item is clicked in the main places list
+    // Called when an li item is clicked or marker is selected directly
     self.placeClicked = function(placeClicked, event) {
-        console.log(event.target);
+        // Use this to manage marker z-index. We want selected marker in front
         self.lastZ = placeClicked.marker.getZIndex();
+        
         // We want to highlight the current selected place in unordered list
         // So we'll want to deselect the previous selection.
         if(self.lastPlaceSelected) {
             self.lastPlaceSelected.isSelected(false);
             self.lastPlaceSelected.marker.setZIndex(self.lastZ);
-            console.log("LAST Z IS " + self.lastZ);
         }
 
         placeClicked.isSelected(true);
         placeClicked.marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
         self.lastPlaceSelected = placeClicked;
+        
+        // Now show the google map info window
+        console.log("IN SELF.PLACECLICKED, calling showInfo for " + placeClicked.name);
         self.showInfo(placeClicked);
     }
 
-    // called every time a character is added or edited in main search bar
+    // called every time a character is added or edited in main search field
     self.searchString.subscribe(function(value) {
 
         if (value !== '') {
@@ -105,6 +108,8 @@ function ViewModel() {
                     
                     marker.image = place.image;
                     marker.setMap(self.map);
+                    
+                    // Manually set zIndex of markers so we can bring them to front when selected
                     marker.setZIndex(i);
 
                     // Add event listener to capture clicks on individual markers
@@ -172,8 +177,10 @@ function ViewModel() {
     
     self.showInfo = function(place) {
 
-        // Create the html content for the infoWindow
         $('.info-window').empty();
+        $('.info-window-yelp').empty();
+        
+        // Create html for info window content
         var markerContent = "<div class='info-window'><h3>" + place.name + 
             "</h3><p class='info-window-yelp-rating'></p><img class='info-window-main-img' src='" + 
             place.image + "'><div class='info-window-yelp'>Retrieving Yelp stuff...</div></div>";
@@ -182,25 +189,14 @@ function ViewModel() {
             self.infoWindow = new google.maps.InfoWindow();
         }
         
+        // Show content in infoWindow immediately
         self.infoWindow.setContent(markerContent);
         self.infoWindow.open(this.map, place.marker);
         
-//http://stackoverflow.com/questions/5416160/listening-for-the-domready-event-for-google-maps-infowindow-class
-        // Very first infoWindow would not show ajax content. This is a fix
-        google.maps.event.addListener(self.infoWindow, 'domready', function() {
-            // Pass yelp id from data model AND the dom element you wish to append
-            // the yelp info to. Doing this to accomodate instances where we may
-            // want yelp info to go somewhere other than an info window. Flexible.
-            var domElement = $('.info-window');
-            self.getYelpInfo(place.yelpId, domElement);
-        });
-    };
-    
-    self.updatePlaceList = function(places2show) {
-        for(var i = 0; i < places2show.length; i++) {
-            var htm = "<li>" + places2show[i].name + "</li>";
-            $("#place-list").append(htm);
-        }
+        // Now add Yelp ratings and snippet to infoWindow
+        var domElement = $('.info-window');
+        self.getYelpInfo(place.yelpId, domElement);
+        
     };
     
     self.showErrorMsg = function(e) {
@@ -218,7 +214,6 @@ function ViewModel() {
     };
     
     self.getYelpInfo = function(placeName, domElement) {
-   
         var auth = {
 
           myConsumerKey: "b5sbMuBxHo5ZqlIJJtRxJQ",
@@ -267,6 +262,7 @@ function ViewModel() {
             // http://geekswithblogs.net/intermark/archive/2014/03/17/jquery.ajax-datatype-jsonpndasherror-handler-not-called.aspx
             'timeout': 5000, // a lot of time for the request to be successfully completed
             'error': function(x, t, m) {
+                $(".info-window-yelp").empty();
                 console.log("IN ERROR: " + t);
                 var placeUrl = "http://www.yelp.com/biz/" + placeName;
                 var html = "Error retrieving yelp data.";
@@ -276,19 +272,23 @@ function ViewModel() {
 
           //'jsonpCallback': 'yelpCallback',
           'success': function(data, text, XMLHttpRequest) {
-              console.log("IN SUCCESS");
-              var html = "";
+              $(".info-window-yelp").empty();
+              var html = "<p>";
               for(var i = 0; i < data.location.display_address.length; i++) {
-                  html += "<p>" + data.location.display_address[i] + "</p>";
+                  html += data.location.display_address[i];
+                  if(i < data.location.display_address.length - 1) {
+                      html += ", ";
+                  }
               }
               html += "<p>" + data.display_phone + "</p>";
               html += "<hr>";
-              html += "<img src='" + data.rating_img_url + "'>";
-              html += "<p class='review-text'>" + data.review_count + " reviews on Yelp";
-              html += "<h5>What people are saying...</h5>";
+              html += "<div class='rating-section'>"
+              html += "<img class='rating-img' src='" + data.rating_img_url + "'>";
+              html += "<p class='rating-text'>" + data.review_count + " reviews on Yelp</div>";
+              html += "<h5 class='clear'>What people are saying about " + data.name + "...</h5>";
               html += '"' + data.snippet_text + '"';
-            html += "<p><a href='" + data.url + "'>More from Yelp</a>";
-            $(".info-window-yelp").html(html);
+              html += "<p><a href='" + data.url + "'>More from Yelp</a>";
+              $(".info-window-yelp").html(html);
           }
     });
 };
@@ -299,17 +299,3 @@ function ViewModel() {
 $(document).ready(function() {
    ko.applyBindings(new ViewModel());
 });
-
-
-function detectBrowser() {
-  var useragent = navigator.userAgent;
-  var mapdiv = document.getElementById("map-canvas");
-
-  if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
-    mapdiv.style.width = '100%';
-    mapdiv.style.height = '100%';
-  } else {
-    mapdiv.style.width = '600px';
-    mapdiv.style.height = '800px';
-  }
-}

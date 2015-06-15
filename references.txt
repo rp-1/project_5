@@ -56,6 +56,12 @@ http://jsonformatter.curiousconcept.com/
 Google maps online style editor
 https://snazzymaps.com/style/17/bright-and-bubbly
 
+Validated CSS
+https://jigsaw.w3.org/css-validator/validator
+
+Validated HTML
+https://validator.w3.org/nu/
+
 
 *************************************
 *                                   *
