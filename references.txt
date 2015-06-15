@@ -69,9 +69,6 @@ https://validator.w3.org/nu/
 *                                   *
 *************************************
 
-Worked out issues with info windows at
-http://stackoverflow.com/questions/5416160/listening-for-the-domready-event-for-google-maps-infowindow-class
-
 Error handling code for jsonp issues
 http://geekswithblogs.net/intermark/archive/2014/03/17/jquery.ajax-datatype-jsonpndasherror-handler-not-called.aspx
 

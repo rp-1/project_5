@@ -17,7 +17,6 @@
         "lat": 36.173987,
         "lng": -86.761352
       },
-      "description": "One of the originals",
       "image": "images/boltons.jpg",
       "yelpId": "boltons-spicy-chicken-and-fish-nashville"
     },
@@ -28,7 +27,6 @@
         "lat": 36.151475,
         "lng": -86.79662
       },
-      "description": "One of the originals",
       "image": "images/hattieb.jpg",
       "yelpId": "hattie-bs-hot-chicken-nashville-2"
     },
@@ -39,7 +37,6 @@
         "lat": 36.151617,
         "lng": -86.850751
       },
-      "description": "One of the originals",
       "image": "images/hattieb_charlotte.jpg",
       "yelpId": "hattie-bs-hot-chicken-nashville-3"
     },
@@ -50,7 +47,6 @@
         "lat": 36.155955,
         "lng": -86.773504
       },
-      "description": "One of the originals",
       "image": "images/400degrees.jpg",
       "yelpId": "400-degrees-hot-chicken-nashville"
     },
@@ -61,7 +57,6 @@
         "lat": 36.047427,
         "lng": -86.676188
       },
-      "description": "One of the originals",
       "image": "images/hotstuff.jpg",
       "yelpId": "hot-stuff-spicy-chicken-and-fish-antioch"
     },
@@ -72,7 +67,6 @@
         "lat": 36.201791,
         "lng": -86.739681
       },
-      "description": "One of the originals",
       "image": "images/pepperfire.jpg",
       "yelpId": "pepperfire-nashville"
     },
@@ -83,7 +77,6 @@
         "lat": 35.912513,
         "lng": -86.887746
       },
-      "description": "One of the originals",
       "image": "images/bigshakes.jpg",
       "yelpId": "big-shakes-hot-chicken-and-fish-franklin"
     },
@@ -94,7 +87,6 @@
         "lat": 35.91739,
         "lng": -86.828731
       },
-      "description": "One of the originals",
       "image": "images/bigshakes_murf.jpg",
       "yelpId": "big-shakes-hot-chicken-and-fish-franklin-2"
     },
@@ -105,7 +97,6 @@
         "lat": 36.160401,
         "lng": -86.777432
       },
-      "description": "One of the originals",
       "image": "images/paradise.jpg",
       "yelpId": "paradise-park-nashville"
     },
@@ -116,7 +107,6 @@
         "lat": 36.136535,
         "lng": -86.802233
       },
-      "description": "One of the originals",
       "image": "images/mcdougals.jpg",
       "yelpId": "mcdougals-chicken-fingers-and-wings-nashville"
     },
@@ -127,7 +117,6 @@
         "lat": 36.302872,
         "lng": -86.619401
       },
-      "description": "One of the originals",
       "image": "images/moores.jpg",
       "yelpId": "moores-famous-fried-chicken-hendersonville"
     },
@@ -138,7 +127,6 @@
         "lat": 36.151466,
         "lng": -86.779609
       },
-      "description": "One of the originals",
       "image": "images/arnolds.jpg",
       "yelpId": "arnolds-country-kitchen-nashville"
     },
@@ -149,7 +137,6 @@
         "lat": 36.245236,
         "lng": -86.749703
       },
-      "description": "One of the originals",
       "image": "images/harolds.jpg",
       "yelpId": "harolds-chicken-nashville-nashville"
     },
@@ -160,7 +147,6 @@
         "lat": 36.047155,
         "lng": -86.715143
       },
-      "description": "One of the originals",
       "image": "images/wingbasket.jpg",
       "yelpId": "wingbasket-nashville-2"
     },
@@ -171,7 +157,6 @@
         "lat": 36.295596,
         "lng": -86.702109
       },
-      "description": "One of the originals",
       "image": "images/wingbasket_mad.jpg",
       "yelpId": "wingbasket-madison"
     },
@@ -182,7 +167,6 @@
         "lat": 36.149927,
         "lng": -86.779407
       },
-      "description": "One of the originals",
       "image": "images/partyfowl.jpg",
       "yelpId": "party-fowl-nashville-2"
     },
@@ -193,7 +177,6 @@
         "lat": 36.17512,
         "lng": -86.788109
       },
-      "description": "One of the originals",
       "image": "images/silos.jpg",
       "yelpId": "silo-nashville"
     },
@@ -204,7 +187,6 @@
         "lat": 36.175919,
         "lng": -86.756343
       },
-      "description": "BBQ place but offers Hot chicken special on Mondays.",
       "image": "images/edleys.jpg",
       "yelpId": "edleys-east-bbq-nashville"
     },
@@ -215,7 +197,6 @@
         "lat": 36.122841,
         "lng": -86.789829
       },
-      "description": "BBQ place but offers Hot chicken special on Mondays.",
       "image": "images/edleys_12th.jpg",
       "yelpId": "edleys-bar-b-que-nashville"
     }

@@ -77,7 +77,6 @@ function ViewModel() {
     });
     
     self.init = function() {
-        
         // Set up some error handling
         window.onerror = function () {
             self.showErrorMsg("GENERAL ERROR");
