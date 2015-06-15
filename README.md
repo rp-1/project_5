@@ -18,12 +18,20 @@ options are for Hot Chicken in Nashville. Find your Fire fills that void.
 Simply load the index.html file in your browser or visit http://richpaschall.com/dev/hotchicken/
 
 ###UX Strategy:
-The web page is designed to deliver maximum utility for users of all devices. So graphics, other
-than those appearing in the map marker info windows, or superfluous design elements will come between
-the user and the information they seek.
+The web page is designed to deliver maximum utility for users of all devices. So we have kept
+graphics and design elements to a minimum.
 
 However, the page should be appealing, so we're using a distinctive color palette and a custom
 Google Maps color scheme have been created.
+
+The key elements should be quickly and easily obtained. Key elements are defined as:
+- Restaurant name
+- A picture of the restaurant
+- Restaurant address
+- Restaurant phone number
+- Yelp rating of restaurant (number of stars, total reviews)
+- A snippet from the latest Yelp review
+- A link to yelp for the restaurant page on Yelp
 
 We have used media queries to determine what should be shown on what device. For smaller
 devices, particularly mobile, we have further simplified the page by removing the list (via CSS)
