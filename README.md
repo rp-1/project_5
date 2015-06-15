@@ -22,7 +22,7 @@ The web page is designed to deliver maximum utility for users of all devices. So
 graphics and design elements to a minimum.
 
 However, the page should be appealing, so we're using a distinctive color palette and a custom
-Google Maps color scheme have been created.
+Google Maps color scheme for an appealing, branded look and identity.
 
 The key elements should be quickly and easily obtained. Key elements are defined as:
 - Restaurant name
