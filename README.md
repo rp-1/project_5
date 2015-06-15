@@ -3,7 +3,7 @@
 
 ###Purpose:
 This project is designed to showcase several web technologies all working together
-to provide users with a useful, enjoy experience.
+to provide users with a useful, enjoyable experience.
 
 ###What it does:
 This single page web app allows you to browse a map or list of Hot Chicken joints
