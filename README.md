@@ -33,13 +33,6 @@ The key elements should be quickly and easily obtained. Key elements are defined
 - A snippet from the latest Yelp review
 - A link to yelp for the restaurant page on Yelp
 
-We have chosen to show images of the restaurant instead of images of food. Hot chicken all
-looks pretty much the same. The taste can be very different. But there is nothing special
-or telling about a shot of the food. But the restaurants can be radically different from eac
-Some of these restaurants don't have web pages. And many of the ones that do, have very poorly
-designed, clumsy sites that make it difficult to find the info you need. So Yelp is the perfect
-destination in which to send visitors seeking more information or, say, a pdf of a menu.
-
 We have used media queries to determine what should be shown on what device. For smaller
 devices, particularly mobile, we have further simplified the page by removing the list (via CSS)
 of restaurants. This greatly increases the utility of the app without any signficiant loss of 
