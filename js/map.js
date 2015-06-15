@@ -84,7 +84,7 @@ function ViewModel() {
         // load data via jQuery json call
         $.ajax({
             type: "GET",
-            url: "data.json",
+            url: "data.min.json",
             async: true,
             dataType: "json",
             success: function(data) {
