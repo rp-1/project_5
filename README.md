@@ -33,11 +33,28 @@ The key elements should be quickly and easily obtained. Key elements are defined
 - A snippet from the latest Yelp review
 - A link to yelp for the restaurant page on Yelp
 
+Some of these restaurants don't have web pages. And many of the ones that do, have very poorly
+designed, clumsy sites that make it difficult to find the info you need. So Yelp is the perfect
+destination in which to send visitors seeking more information or, say, a pdf of a menu.
+
 We have used media queries to determine what should be shown on what device. For smaller
 devices, particularly mobile, we have further simplified the page by removing the list (via CSS)
 of restaurants. This greatly increases the utility of the app without any signficiant loss of 
 functionality. I can still search by restaurant name interactively. I can still directly
 select restaurants on the map.
+
+###Marketing:
+In order to make the page "pay for itself" (and hopefully then some), we will investigate the possiblity
+of adding sponsored restaurants. Instead of just a banner ad or something that would detract from the
+user experience, we might consider highlighting sponsored restaurants in the list, perhaps with a blurb
+or "daily specials" link beneath the restaurant name.
+
+To attract users to the site, we will do the usual social and blog posts. We should make sure that any
+article that talks about Hot Chicken has a link to Find Your Fire. Additionally, we can develop our own
+ads that create interest and inpire use of the site.
+
+A sample banner headline: "That's not your mouth watering. It's your tastebuds sweating." Then we bring up
+site info "Who has the hottest hot chicken in Nashville? Find out at FindYourFire.com"
 
 ###Technologies used:
 Find Your Fire uses the following technologies:
